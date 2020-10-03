@@ -1,0 +1,23 @@
+#gradle
+/.gradle
+
+#IDE
+.idea
+
+#build
+/build
+
+#configuration
+/config
+
+
+
+
+
+
+
+#properties file
+/src/main/resources/datasource.properties
+/src/main/resources/application-mysql.properties
+/src/main/resources/application.properties
+/local.properties

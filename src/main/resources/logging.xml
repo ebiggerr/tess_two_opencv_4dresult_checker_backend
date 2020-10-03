@@ -1,0 +1,179 @@
+<!--
+/*
+        *  Copyright (C) 2020  Alexious Yong (Ebiggerr)
+        *
+        *     This program is free software: you can redistribute it and/or modify
+        *     it under the terms of the GNU General Public License as published by
+        *     the Free Software Foundation, either version 3 of the License, or
+        *     (at your option) any later version.
+        *
+        *     This program is distributed in the hope that it will be useful,
+        *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+        *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        *     GNU General Public License for more details.
+        *
+        *     You should have received a copy of the GNU General Public License
+        *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+        */
+-->
+<configuration scan="true" scanPeriod="300 seconds" debug="false">
+
+    <timestamp key="Timestamp" datePattern="yyyy_MM_dd HH_mm_ss_SSS"/>
+
+    <property name="trace_log_level" value="trace"/>
+    <property name="debug_log_level" value="debug"/>
+    <property name="info_log_level" value="info"/>
+    <property name="warn_log_level" value="warn"/>
+    <property name="error_log_level" value="error"/>
+
+    <!-- Maximum days to keep the logs archive-->
+    <property name="log_maxHistory_days" value="14"/>
+
+    <!-- Directory to store the DEBUG and ERROR log-->
+    <property name="DEBUG_LOG_PATH" value="src/main/logs/logback/debug/com_ebiggerr_backend-${Timestamp}_DEBUG_ERROR.log" />
+
+    <!-- Directory to store the WARN log-->
+    <property name="WARN_ERROR_LOG_PATH" value="src/main/logs/logback/error/com_ebiggerr_backend-${Timestamp}_WARN.log" />
+
+    <!-- Directory to store the INFO log-->
+    <property name="INFO_LOG_PATH" value="src/main/logs/logback/log/com_ebiggerr_backend-${Timestamp}_INFO.log" />
+
+    <!-- pattern of the log message : 2020-09-29 14:15:35.049 c.t.e. INFO XXX - XXX -->
+    <property name="log_pattern"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"/>
+
+        <!-- CONSOLE APPENDER -->
+        <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+
+            <encoder>
+                <pattern>${log_pattern}</pattern>
+            </encoder>
+
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+
+                <level>DEBUG</level>
+
+                <onMatch>DENY</onMatch>
+
+                <onMismatch>ACCEPT</onMismatch>
+
+            </filter>
+
+        </appender>
+
+        <!-- FILE APPENDER __ DEBUG AND ERROR LEVEL -->
+        <appender name="debug_log_fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+            <file>${DEBUG_LOG_PATH}</file>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+
+                <fileNamePattern>logs/logback/debug/com_ebiggerr_%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+
+                <maxFileSize>1MB</maxFileSize>
+
+                <totalSizeCap>200MB</totalSizeCap>
+
+                <MaxHistory>${log_maxHistory_days}</MaxHistory>
+
+            </rollingPolicy>
+
+            <encoder>
+                <pattern>${log_pattern}</pattern>
+            </encoder>
+
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+
+                <level>ERROR</level>
+                <level>WARN</level>
+                <level>INFO</level>
+                <level>DEBUG</level>
+
+                <onMatch>ACCEPT</onMatch>
+
+                <onMismatch>DENY</onMismatch>
+
+            </filter>
+
+        </appender>
+
+    <!-- FILE APPENDER __ WARN LEVEL -->
+    <appender name="ERROR_log_Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>${WARN_ERROR_LOG_PATH}</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+
+            <fileNamePattern>logs/logback/error/com_ebiggerr_%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+
+            <maxFileSize>1MB</maxFileSize>
+
+            <totalSizeCap>200MB</totalSizeCap>
+
+            <MaxHistory>${log_maxHistory_days}</MaxHistory>
+
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+
+            <level>ERROR</level>
+            <level>WARN</level>
+
+            <onMatch>ACCEPT</onMatch>
+
+            <onMismatch>DENY</onMismatch>
+
+        </filter>
+
+    </appender>
+
+    <!-- FILE APPENDER __ INFO LEVEL -->
+    <appender name="INFO_log_Appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>${INFO_LOG_PATH}</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+
+            <fileNamePattern>logs/logback/log/com_ebiggerr_%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+
+            <maxFileSize>1MB</maxFileSize>
+
+            <totalSizeCap>200MB</totalSizeCap>
+
+            <MaxHistory>${log_maxHistory_days}</MaxHistory>
+
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+
+            <level>INFO</level>
+
+            <onMatch>ACCEPT</onMatch>
+
+            <onMismatch>DENY</onMismatch>
+
+        </filter>
+
+    </appender>
+
+    <!-- root level -->
+    <root lever="trace">
+        <appender-ref ref="debug_log_fileAppender" />
+        <appender-ref ref="ERROR_log_Appender" />
+        <appender-ref ref="INFO_log_Appender" />
+        <appender-ref ref="consoleAppender" />
+    </root>
+
+    <logger name="com.ebiggerr" level="debug" additivity="true">
+        <appender-ref ref="consoleAppender" />
+    </logger>
+
+</configuration>
