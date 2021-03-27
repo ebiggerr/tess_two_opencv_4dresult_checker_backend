@@ -10,11 +10,8 @@
 #configuration
 /config
 
-
-
-
-
-
+#logging files
+/src/main/logs
 
 #properties file
 /src/main/resources/datasource.properties
