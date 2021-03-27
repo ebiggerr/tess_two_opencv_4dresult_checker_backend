@@ -36,7 +36,7 @@ public class mainController {
         this.resultService = resultService;
     }
 
-    @GetMapping(path = "/getDate")
+    @GetMapping(path = "/getResult")
     public API_Response getResultAccordingToDate(@RequestBody resultRequest request){
 
         Result result=resultService.loadResult(LocalDate.parse(request.getDate()),request.getDrawingService(),request.getGameType());
