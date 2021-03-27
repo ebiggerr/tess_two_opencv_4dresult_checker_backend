@@ -8,8 +8,34 @@ Curent Status of the Project : **Under Construction**
 
 - version 0.0.1 - SNAPSHOT
     - Added `logging.xml` to configure the LogBack.
-    - 
+- version 1.0.0
+    - First Release
 
+
+## Guide
+
+Using this application
+
+Dowload and unzip the source repository or clone it using Git:
+    
+    git clone http://github.com/ebiggerr/tess_two_opencv_4dresult_checker_backend.git
+    
+ Create application.properties file under "src\main\resources"
+ This file is to configure the Spring Boot Application.
+ 
+ The configuration is for PostgreSQL database server.
+ 
+    spring.datasource.url={YOUR-DATABASE-URL}
+    spring.datasource.username={YOUR-DATABASE-USERNAME}
+    spring.datasource.password={YOUR-DATABASE-PASSWORD}
+    spring.datasource.initialization-mode=always
+    spring.datasource.platform=postgres
+    
+    spring.datasource.driver-class-name=org.postgresql.Driver
+    spring.jpa.database-platform = org.hibernate.dialect.PostgreSQL10Dialect
+    
+    
+ 
 
 ## Contributing
 
