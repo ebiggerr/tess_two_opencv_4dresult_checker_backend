@@ -1,8 +1,10 @@
 # Backend for the Tess_two OpenCV 4D Result Checker Mobile Application.
 
-Curent Status of the Project : **Under Construction**
+Curent Status of the Project : Stopped Development after the version 2.0.0
 
 ## Introduction
+
+Mobile application will send request to this web API with information such as drawingDate, drawingService and gameType and the web API will return lottery result if record found.
 
 ## Changelog
 
@@ -10,6 +12,11 @@ Curent Status of the Project : **Under Construction**
     - Added `logging.xml` to configure the LogBack.
 - version 1.0.0
     - First Release
+- version 2.0.0
+    - Not backward compatible with version 1.0.0
+    - Removed DatabaseCheck.java ( Moved the function inside DateValidator)
+    - On certain case, according to the application logic, it has to query the database twice to get the result, this is needed to check if there is a Special Drawing on Tuesday.
+        
 
 
 ## Guide
