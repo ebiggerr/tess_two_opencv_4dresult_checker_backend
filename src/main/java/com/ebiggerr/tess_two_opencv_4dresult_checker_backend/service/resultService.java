@@ -19,7 +19,7 @@ package com.ebiggerr.tess_two_opencv_4dresult_checker_backend.service;
 
 import com.ebiggerr.tess_two_opencv_4dresult_checker_backend.entity.Result;
 import com.ebiggerr.tess_two_opencv_4dresult_checker_backend.repository.resultRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ebiggerr.tess_two_opencv_4dresult_checker_backend.service.helperService.DateValidator;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,13 +29,17 @@ public class resultService {
 
     private final resultRepo resultRepo;
 
-    @Autowired
-    public resultService(resultRepo resultRepo){
-        this.resultRepo=resultRepo;
+    public resultService(resultRepo resultRepo) {
+        this.resultRepo = resultRepo;
     }
 
     public Result loadResult(LocalDate date, String drawingService, String gameType){
 
-        return resultRepo.findResultByDateAndDrawingServiceAndGameType(date,drawingService,gameType);
+        DateValidator dateValidator=new DateValidator(resultRepo);
+        LocalDate correctDate=dateValidator.getCorrectDate(date,drawingService,gameType);
+
+        return resultRepo.findResultByDateAndDrawingServiceAndGameType(correctDate,drawingService,gameType);
+
     }
+
 }
