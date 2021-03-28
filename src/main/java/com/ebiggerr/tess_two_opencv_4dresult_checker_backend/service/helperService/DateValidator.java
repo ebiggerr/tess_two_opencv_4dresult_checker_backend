@@ -17,6 +17,9 @@
 
 package com.ebiggerr.tess_two_opencv_4dresult_checker_backend.service.helperService;
 
+
+import com.ebiggerr.tess_two_opencv_4dresult_checker_backend.entity.Result;
+import com.ebiggerr.tess_two_opencv_4dresult_checker_backend.repository.resultRepo;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -24,6 +27,13 @@ import java.time.LocalDate;
 
 @Service
 public class DateValidator {
+
+    private final resultRepo resultRepo;
+
+    public DateValidator(resultRepo resultRepo) {
+        this.resultRepo = resultRepo;
+    }
+
 
     /*
     *   getCorrectDate()
@@ -50,13 +60,13 @@ public class DateValidator {
      *
      *  @author
      * */
-    public static LocalDate getCorrectDate(LocalDate userScanned_Drawing_Date,String drawingService, String gameType){
+    public LocalDate getCorrectDate(LocalDate userScanned_Drawing_Date, String drawingService, String gameType){
+
+        Result result=new Result();
 
         DayOfWeek day=userScanned_Drawing_Date.getDayOfWeek();
 
-        DatabaseCheck check=new DatabaseCheck();
-
-        int status=2;
+        int status=0;
 
         switch ( day ){
 
@@ -66,19 +76,19 @@ public class DateValidator {
             case WEDNESDAY :
                     return userScanned_Drawing_Date;
 
-            case MONDAY: status=check.checkTuesdaySpecialDrawing(userScanned_Drawing_Date,drawingService,gameType);
-                                if( status ==1 ){
+            case MONDAY: result= resultRepo.findResultByDateAndDrawingServiceAndGameType(userScanned_Drawing_Date.plusDays(1),drawingService,gameType);
+                                if( result != null ){
                                     return userScanned_Drawing_Date.plusDays(1);
                                 }
-                                else if( status == 0 ){
+                                else if( result == null ){
                                     return userScanned_Drawing_Date.plusDays(2);
                                 }
 
-            case TUESDAY : status=check.checkTuesdaySpecialDrawing(userScanned_Drawing_Date,drawingService,gameType);
-                                if( status ==1 ){
+            case TUESDAY :  result= resultRepo.findResultByDateAndDrawingServiceAndGameType(userScanned_Drawing_Date,drawingService,gameType);
+                                if( result != null ){
                                     return userScanned_Drawing_Date;
                                 }
-                                else if( status == 0 ){
+                                else if( result == null ){
                                     return userScanned_Drawing_Date.plusDays(1);
                                 }
 
