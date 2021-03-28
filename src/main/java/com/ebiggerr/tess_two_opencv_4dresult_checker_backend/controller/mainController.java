@@ -39,14 +39,21 @@ public class mainController {
     @GetMapping(path = "/getResult")
     public API_Response getResultAccordingToDate(@RequestBody resultRequest request){
 
-        Result result=resultService.loadResult(LocalDate.parse(request.getDate()),request.getDrawingService(),request.getGameType());
+        try {
+            Result result = resultService.loadResult(LocalDate.parse(request.getDate()), request.getDrawingService(), request.getGameType());
 
-        if( result == null ){
+            if (result == null) {
+                return new API_Response().NotFound();
+            }
 
-            return new API_Response().NotFound();
+                return new API_Response().Success(result);
+
+        }
+        catch (NullPointerException ignored) {
+
         }
 
-        return new API_Response().Success(result);
+        return new API_Response().NotFound();
     }
 
 }
